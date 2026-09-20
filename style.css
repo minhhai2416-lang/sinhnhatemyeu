@@ -1,0 +1,584 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Outfit", sans-serif;
+  background: linear-gradient(135deg, #ffccf9 0%, #f3ccff 50%, #d0e1ff 100%);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  overflow: hidden;
+  position: relative;
+}
+
+.password-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #ffccf9 0%, #f3ccff 50%, #d0e1ff 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  transition:
+    opacity 0.5s ease,
+    visibility 0.5s ease;
+}
+
+.password-content {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  border-radius: 30px;
+  box-shadow: 0 20px 50px rgba(255, 105, 180, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 320px;
+  width: 92%;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  gap: 8px;
+  max-height: 95vh;
+  overflow-y: auto;
+}
+
+.pass-right-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pass-gif {
+  width: 140px;
+  height: auto;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  transition: width 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .password-content {
+    flex-direction: row;
+    max-width: 700px;
+    padding: 40px;
+    gap: 40px;
+    max-height: none;
+  }
+  .pass-gif {
+    width: 280px;
+    margin-bottom: 0;
+  }
+  .pass-right-side {
+    flex: 1;
+  }
+}
+
+.pass-label {
+  color: #ff47a1;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  text-shadow: 0 2px 4px rgba(255, 105, 180, 0.1);
+}
+
+.pass-input-wrapper {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.dot {
+  width: 14px;
+  height: 14px;
+  border: 2.5px solid #ff47a1;
+  border-radius: 50%;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.dot.active {
+  background: #ff47a1;
+  transform: scale(1.3);
+  box-shadow: 0 0 10px rgba(255, 71, 161, 0.5);
+}
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.key {
+  background: white;
+  border: none;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #ff47a1;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+@media (min-width: 768px) {
+  .key {
+    width: 65px;
+    height: 65px;
+    font-size: 1.8rem;
+  }
+}
+
+.key:active {
+  transform: scale(0.9);
+  background: #fff0f7;
+}
+
+.key.delete { font-size: 1.4rem; background: #fff0f7; }
+.key.empty { background: transparent; box-shadow: none; cursor: default; pointer-events: none; }
+
+.shake-content { animation: shake 0.5s ease-in-out; }
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-10px); }
+  40%, 80% { transform: translateX(10px); }
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.cake-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cake-img {
+  width: 500px;
+  max-width: 90vw;
+  height: auto;
+  filter: drop-shadow(0 15px 25px rgba(255, 105, 180, 0.4));
+  transition: width 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .cake-img { width: 600px; }
+}
+
+.candle-img {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8vw;
+  max-width: 40px;
+  min-width: 25px;
+  z-index: 2;
+  filter: drop-shadow(0 5px 10px rgba(255, 165, 0, 0.5));
+  transition: opacity 0.5s ease, transform 0.5s ease-out, top 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@media (max-width: 480px) { .candle-img { top: 12%; } }
+
+.candle-appearing {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  animation: dropInCandle 0.8s ease-out forwards;
+}
+
+@keyframes dropInCandle {
+  0% { transform: translate(-50%, -150px); opacity: 0; }
+  100% { transform: translate(-50%, 0); opacity: 1; }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 10;
+}
+
+.instruction {
+  color: #ff47a1;
+  font-size: 1.2rem;
+  font-weight: 400;
+  transition: all 0.3s ease;
+}
+
+.bounce-up {
+  animation: bounceUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes bounceUp {
+  0% { transform: translateY(50px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.floating-elements {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.celebration-item {
+  position: absolute;
+  bottom: -150px;
+  pointer-events: none;
+  z-index: 1;
+  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.1));
+  animation: floatUpNoRotate 8s linear forwards;
+}
+
+.floating-emoji {
+  position: absolute;
+  bottom: -50px;
+  font-size: 2.5rem;
+  pointer-events: none;
+  z-index: 2;
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.1));
+  animation: floatUpNoRotate 6s ease-in forwards;
+}
+
+@keyframes floatUpNoRotate {
+  0% { transform: translateY(0); opacity: 0; }
+  25% { opacity: 1; }
+  75% { opacity: 1; }
+  100% { transform: translateY(-125vh); opacity: 0; }
+}
+
+.letter-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 150vh);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+  z-index: 100;
+  transition: transform 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+
+.letter-container.show {
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+}
+
+.letter-img {
+  width: 150px;
+  height: auto;
+  filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.3));
+  animation: floatingLetterCenter 3s ease-in-out infinite;
+  animation-play-state: paused;
+}
+
+.letter-container.show .letter-img {
+  animation-play-state: running;
+}
+
+.letter-text {
+  color: #ff47a1;
+  font-weight: 700;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  background-color: aliceblue;
+  border-radius: 10px;
+  border: 2px solid #ff47a1;
+  padding: 5px;
+}
+
+.letter-container.show-text .letter-text {
+  opacity: 1;
+  transform: translateY(0);
+  animation: blinkText 1.5s ease-in-out infinite;
+}
+
+@keyframes floatingLetterCenter {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes blinkText {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.05); }
+}
+
+.message-modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.92);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s ease;
+}
+
+.message-modal.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px; 
+  transform: scale(0.8);
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  width: 90%;
+  max-width: 850px;
+}
+
+.message-modal.show .modal-content-wrapper {
+  transform: scale(1);
+}
+
+/* ========================================= */
+/* CSS VẼ BÓ HOA TULIP                       */
+/* ========================================= */
+.css-bouquet {
+  position: relative;
+  width: 220px;
+  height: 290px;
+  filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.2));
+  opacity: 0;
+  transform: translateX(-50px) rotate(-10deg);
+  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s; 
+  pointer-events: none;
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.message-modal.show .css-bouquet {
+  opacity: 1;
+  transform: translateX(0) rotate(0deg);
+}
+
+/* Giấy gói */
+.wrap-back {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 180px;
+  background: #e6ccb2; /* Màu giấy lót kraft nhạt */
+  clip-path: polygon(0 0, 100% 0, 75% 100%, 25% 100%);
+  -webkit-clip-path: polygon(0 0, 100% 0, 75% 100%, 25% 100%);
+  z-index: 1;
+  border-radius: 10px;
+}
+
+.wrap-front {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 110px;
+  background: #ddb892; /* Màu giấy kraft đậm */
+  clip-path: polygon(5% 0, 95% 0, 75% 100%, 25% 100%);
+  -webkit-clip-path: polygon(5% 0, 95% 0, 75% 100%, 25% 100%);
+  z-index: 5;
+  border-radius: 5px;
+  box-shadow: inset 0 10px 15px rgba(0,0,0,0.1);
+}
+
+.bouquet-ribbon {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 45px;
+  z-index: 6;
+  text-shadow: 0 5px 5px rgba(0,0,0,0.2);
+}
+
+/* Cành hoa */
+.stem {
+  position: absolute;
+  bottom: 70px;
+  width: 8px;
+  background: #52b788;
+  border-radius: 4px;
+  z-index: 2;
+}
+.stem-left { left: 65px; height: 130px; transform: rotate(-15deg); }
+.stem-center { left: 106px; height: 165px; }
+.stem-right { left: 147px; height: 130px; transform: rotate(15deg); }
+
+/* Lá hoa */
+.leaf {
+  position: absolute;
+  width: 25px;
+  height: 70px;
+  background: #40916c;
+  border-radius: 100% 0 100% 0;
+  z-index: 2;
+}
+.leaf-left-1 { left: 45px; bottom: 100px; transform: rotate(-45deg); }
+.leaf-center-1 { left: 115px; bottom: 120px; transform: rotate(30deg) scaleX(-1); }
+.leaf-center-2 { left: 85px; bottom: 110px; transform: rotate(-30deg); }
+.leaf-right-1 { left: 150px; bottom: 100px; transform: rotate(45deg) scaleX(-1); }
+
+/* Cánh hoa (Định hình khối tròn và khuyết trên) */
+.tulip-flower {
+  position: absolute;
+  width: 46px;
+  height: 56px;
+  border-radius: 50% 50% 40% 40% / 60% 60% 40% 40%;
+  overflow: hidden;
+  z-index: 3;
+  box-shadow: inset -5px -5px 15px rgba(0,0,0,0.15);
+}
+.tulip-flower::before, .tulip-flower::after {
+  content: '';
+  position: absolute;
+  width: 35px;
+  height: 55px;
+  border-radius: 50%;
+}
+.tulip-flower::before { left: -10px; top: 12px; transform: rotate(-20deg); }
+.tulip-flower::after { right: -10px; top: 12px; transform: rotate(20deg); }
+
+/* Màu sắc và vị trí 3 đóa hoa */
+.flower-left {
+  left: 35px; bottom: 180px; transform: rotate(-15deg);
+  background: #ff7eb3; /* Hồng pastel */
+}
+.flower-left::before, .flower-left::after { background: #ff47a1; } /* Cánh đè lên */
+
+.flower-center {
+  left: 87px; bottom: 215px; z-index: 4;
+  background: #ff47a1; /* Hồng đậm */
+}
+.flower-center::before, .flower-center::after { background: #e60073; }
+
+.flower-right {
+  left: 139px; bottom: 180px; transform: rotate(15deg);
+  background: #ff99c2; /* Hồng phấn */
+}
+.flower-right::before, .flower-right::after { background: #ff4d94; }
+
+/* Responsive trên điện thoại */
+@media (max-width: 768px) {
+  .modal-content-wrapper {
+    flex-direction: column;
+    gap: 15px;
+    max-height: 90vh;
+  }
+  .css-bouquet {
+    transform: translateY(-30px) scale(0.65);
+  }
+  .message-modal.show .css-bouquet {
+    transform: translateY(0) scale(0.65);
+  }
+}
+/* ========================================= */
+
+
+.letter-paper {
+  background: #fdf5e6;
+  width: 100%;
+  max-width: 500px;
+  padding: 25px;
+  border-radius: 5px;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  border: 6px double #d4a373;
+  color: #5d4037;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+@media (min-width: 768px) {
+  .letter-paper {
+    padding: 40px;
+    border: 8px double #d4a373;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+}
+
+.letter-paper h2 { text-align: center; color: #ff47a1; margin-bottom: 20px; }
+.close-btn { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; color: #8d6e63; }
+
+.fireworks-container {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.rocket {
+  position: absolute;
+  bottom: 0;
+  width: 4px; height: 20px;
+  background: linear-gradient(to top, transparent, #fff);
+  border-radius: 50% 50% 0 0;
+  filter: blur(0.5px);
+  animation: launch 1s ease-out forwards;
+}
+
+.particle {
+  position: absolute;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: particle-explode 1.2s ease-out forwards;
+}
+
+@keyframes launch {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(calc(-1 * var(--target-height))); opacity: 0; }
+}
+
+@keyframes particle-explode {
+  0% { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
+}
